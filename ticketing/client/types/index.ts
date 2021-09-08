@@ -1,4 +1,3 @@
-// TODO get from common types
 export interface User {
   id: string
   email: string
