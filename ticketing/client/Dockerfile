@@ -5,5 +5,6 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm ci --only=prod
 COPY . .
+RUN npm run disabletelemetry
 
 CMD ["npm", "run", "dev"]
