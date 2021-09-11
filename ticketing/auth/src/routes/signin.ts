@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { body } from 'express-validator'
-import { validateRequest, BadRequestError } from '@eekis/common'
+import { validateRequest, BadRequestError } from '@eeki-ticketing/common'
 
 import { PasswordManager } from '../services/passwordManager'
 import { User } from '../models/user'

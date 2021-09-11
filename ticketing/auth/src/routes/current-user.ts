@@ -1,5 +1,5 @@
 import express from 'express'
-import { currentUser } from '@eekis/common'
+import { currentUser } from '@eeki-ticketing/common'
 
 const router = express.Router()
 
