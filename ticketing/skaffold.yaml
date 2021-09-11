@@ -26,7 +26,14 @@ build:
             dest: .
           - src: '**/*.tsx'
             dest: .
-
+    - image: eeki/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
 
 # Google cloud build
 #build:
