@@ -1,6 +1,6 @@
 {
-  "name": "@eekis/common",
-  "version": "1.0.3",
+  "name": "@eeki-ticketing/common",
+  "version": "1.0.0",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
