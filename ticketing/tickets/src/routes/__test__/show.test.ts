@@ -1,21 +1,21 @@
 import request from 'supertest'
 import { app } from '../../app'
+import { ticketsBaseUrl } from '../../const'
+import { createTicket, getMongoId } from '../../test/helpers'
 
 it('returns a 404 if ticket is not found', async () => {
-  await request(app).get('/api/tickets/123456789').send().expect(404)
+  const id = getMongoId()
+  await request(app).get(`${ticketsBaseUrl}/${id}`).send().expect(404)
 })
 
 it('returns the ticket if the ticket is found', async () => {
   const title = 'Valid title'
   const price = 20
 
-  const response = await request(app)
-    .post('/api/tickets')
-    .set('Cookie', signin())
-    .send({ title, price })
+  const response = await createTicket(title, price)
 
   const ticketResponse = await request(app)
-    .get(`/api/tickets/${response.body.id}`)
+    .get(`${ticketsBaseUrl}/${response.body.id}`)
     .send()
     .expect(200)
 

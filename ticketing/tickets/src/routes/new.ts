@@ -1,17 +1,15 @@
 import express, { Request, Response } from 'express'
-import { body } from 'express-validator'
 import { requireAuth, validateRequest } from '@eeki-ticketing/common'
 import { Ticket } from '../models/ticket'
+import { validateTicket } from '../middlewares/validate-ticket'
+import { ticketsBaseUrl } from '../const'
 
 const router = express.Router()
 
 router.post(
-  '/api/tickets',
+  ticketsBaseUrl,
   requireAuth,
-  [
-    body('title').notEmpty().withMessage('Title is required'),
-    body('price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
-  ],
+  validateTicket,
   validateRequest,
   async (req: Request, res: Response) => {
     const { title, price } = req.body

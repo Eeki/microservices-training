@@ -1,6 +1,7 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
+import { getMongoId } from './helpers'
 
 declare global {
   // eslint-disable-next-line no-var
@@ -30,9 +31,9 @@ afterAll(async () => {
   await mongoose.connection.close()
 })
 
-global.signin = () => {
+global.signin = (id = getMongoId()) => {
   const payload = {
-    id: 'fakeid',
+    id,
     email: 'fake@test.com',
   }
   const token = jwt.sign(payload, process.env.JWT_KEY!)
