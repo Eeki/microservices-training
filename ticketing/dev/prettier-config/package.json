@@ -1,0 +1,12 @@
+{
+  "name": "@eeki-ticketing/prettier-config",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "eliel",
+  "license": "ISC",
+  "peerDependencies": {
+    "prettier": "^2.4.1"
+  }
+}
