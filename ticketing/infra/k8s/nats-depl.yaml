@@ -16,15 +16,15 @@ spec:
         - name: nats
           image: nats-streaming:0.22.1
           args: [
-            '-p',
+            '-p', # port
             '4222',
-            '-m',
+            '-m', # monitoring port
             '8222',
-            '-hbi',
+            '-hbi', # heartbeat interval
             '5s',
-            '-hbt',
+            '-hbt', # heartbeat time
             '5s',
-            '-hbf',
+            '-hbf', # heartbeat fail tolerance
             '2',
             '-SD',
             '-cid',
