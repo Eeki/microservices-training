@@ -27,7 +27,7 @@ spec:
             '-hbf', # heartbeat fail tolerance
             '2',
             '-SD',
-            '-cid',
+            '-cid', # cluster id
             'ticketing'
           ]
 ---

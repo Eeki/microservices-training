@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import { getMongoId } from './helpers'
 
+jest.mock('../nats-wrapper')
+
 declare global {
   // eslint-disable-next-line no-var
   var signin: () => string[]
@@ -19,6 +21,7 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
+  jest.clearAllMocks()
   const collections = await mongoose.connection.db.collections()
 
   for (const collection of collections) {

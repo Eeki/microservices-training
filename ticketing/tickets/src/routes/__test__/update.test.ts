@@ -3,6 +3,7 @@ import { app } from '../../app'
 import { Ticket } from '../../models/ticket'
 import { ticketsBaseUrl } from '../../const'
 import { createTicket, getMongoId } from '../../test/helpers'
+import { natsWrapper } from '../../nats-wrapper'
 
 it('returns a 404 if the provided id does not exits', async () => {
   const id = getMongoId()
@@ -74,4 +75,20 @@ it('updates the ticket provided valid inputs', async () => {
   const ticket = await Ticket.findById(response.body.id)
   expect(ticket?.title).toEqual(newTitle)
   expect(ticket?.price).toEqual(newPrice)
+})
+
+it('publishes an event', async () => {
+  const cookie = signin()
+  const response = await createTicket('title', 10, cookie)
+
+  const newTitle = 'New title'
+  const newPrice = 100
+
+  await request(app)
+    .put(`${ticketsBaseUrl}/${response.body.id}`)
+    .set('Cookie', cookie)
+    .send({ title: newTitle, price: newPrice })
+    .expect(200)
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled()
 })
