@@ -57,5 +57,6 @@ vboxmanage showvminfo minikube
 
 # Enable metric server
 minikube addons enable metrics-server
+
 ```
 

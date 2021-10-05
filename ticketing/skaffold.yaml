@@ -34,6 +34,14 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: eeki/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
 
 # Google cloud build
 #build:
