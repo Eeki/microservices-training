@@ -1,5 +1,6 @@
 import { CustomError } from './custom-error'
 
+// TODO status code 403 would suit better for this error
 export class NotAuthorizedError extends CustomError {
   statusCode = 401
 
