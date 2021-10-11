@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import { Order, OrderStatus } from './orders'
 
 interface TicketAttrs {
+  id: string
   title: string
   price: number
 }
@@ -38,8 +39,11 @@ const ticketSchema = new mongoose.Schema(
   },
 )
 
-ticketSchema.statics.build = (attrs: TicketAttrs) => {
-  return new Ticket(attrs)
+ticketSchema.statics.build = ({ id, ...rest }: TicketAttrs) => {
+  return new Ticket({
+    _id: id,
+    ...rest,
+  })
 }
 
 // The key word function is used here to have the right context for "this"

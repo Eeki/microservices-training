@@ -8,7 +8,9 @@ import {
   requireAuth,
   validateRequest,
 } from '@eeki-ticketing/common'
-import { Ticket, Order } from '../models'
+import { Order, Ticket } from '../models'
+import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher'
+import { natsWrapper } from '../nats-wrapper'
 
 const EXPIRATION_WINDOW_SECONDS = 5 * 60
 
@@ -54,8 +56,14 @@ router.post(
     })
     await order.save()
 
-    // TODO
     // Publish an event saying that an order was created
+    new OrderCreatedPublisher(natsWrapper.client).publish({
+      id: order.id,
+      status: OrderStatus.Created,
+      userId: order.userId,
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: { id: ticket.id, price: ticket.price },
+    })
 
     res.status(201).send(order)
   },

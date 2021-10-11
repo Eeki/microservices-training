@@ -1,8 +1,10 @@
 import request from 'supertest'
+import { Subjects } from '@eeki-ticketing/common'
 import { app } from '../../app'
 import { buildTicket, buildOrder, getMongoId } from '../../test/helpers'
 import { ORDERS_BASE_URL } from '../../const'
 import { Order, OrderStatus } from '../../models'
+import { natsWrapper } from '../../nats-wrapper'
 
 it('marks an order as cancelled', async () => {
   // Create a ticket
@@ -42,4 +44,20 @@ it('Return not authorized if the the user does not own the order', async () => {
     .expect(401)
 })
 
-it.todo('emits a order cancelled event')
+it('emits a order cancelled event', async () => {
+  const userId = getMongoId()
+  const ticket = await buildTicket()
+  const order = await buildOrder({ ticket, userId })
+
+  await request(app)
+    .delete(`${ORDERS_BASE_URL}/${order.id}`)
+    .set('Cookie', signin(userId))
+    .send()
+    .expect(204)
+
+  expect(natsWrapper.client.publish).toHaveBeenCalledWith(
+    Subjects.OrderCancelled,
+    JSON.stringify({ id: order.id, ticket: { id: ticket.id } }),
+    expect.anything(),
+  )
+})
