@@ -55,6 +55,9 @@ minikube start
 # Show minikube info
 vboxmanage showvminfo minikube
 
+# Enable ingress controller
+minikube addons enable ingress
+
 # Enable metric server
 minikube addons enable metrics-server
 

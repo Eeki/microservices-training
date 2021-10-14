@@ -1,7 +1,13 @@
 import { Subjects } from './subjects'
-import { Event, Ticket } from './types'
+import { Event } from './types'
 
 export interface TicketUpdatedEvent extends Event {
   subject: Subjects.TicketUpdated
-  data: Ticket
+  data: {
+    id: string
+    version: number
+    title: string
+    price: number
+    userId: string
+  }
 }
