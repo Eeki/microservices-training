@@ -5,6 +5,7 @@ import { OrderStatus } from '@eeki-ticketing/common'
 interface buildTicketAttrs {
   title?: string
   price?: number
+  id?: string
 }
 
 interface buildOrderAttrs {
@@ -20,7 +21,12 @@ export const getMongoId = (): string =>
 export const buildTicket = async (
   attrs?: buildTicketAttrs,
 ): Promise<TicketDoc> => {
-  const ticket = Ticket.build({ title: 'concert', price: 20, ...attrs })
+  const ticket = Ticket.build({
+    title: 'concert',
+    price: 20,
+    id: getMongoId(),
+    ...attrs,
+  })
   await ticket.save()
   return ticket
 }
