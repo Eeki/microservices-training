@@ -57,7 +57,11 @@ it('emits a order cancelled event', async () => {
 
   expect(natsWrapper.client.publish).toHaveBeenCalledWith(
     Subjects.OrderCancelled,
-    JSON.stringify({ id: order.id, ticket: { id: ticket.id } }),
+    JSON.stringify({
+      id: order.id,
+      version: order.version,
+      ticket: { id: ticket.id },
+    }),
     expect.anything(),
   )
 })

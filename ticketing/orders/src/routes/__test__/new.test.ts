@@ -55,6 +55,7 @@ it('emits an order created event', async () => {
     Subjects.OrderCreated,
     JSON.stringify({
       id,
+      version: 0,
       status: OrderStatus.Created,
       userId,
       expiresAt,
