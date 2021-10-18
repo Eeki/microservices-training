@@ -1,9 +1,9 @@
-import { Message } from 'node-nats-streaming'
 import { TicketCreatedEvent } from '@eeki-ticketing/common'
 import { TicketCreatedListener } from '../ticket-created-listener'
 import { natsWrapper } from '../../../nats-wrapper'
 import { getMongoId } from '../../../test/helpers'
 import { Ticket } from '../../../models'
+import { getFakeMessage } from '../../../../../tickets/src/test/helpers'
 
 const setup = async (eventData?: Partial<TicketCreatedEvent['data']>) => {
   // Create an instance of the listener
@@ -19,12 +19,7 @@ const setup = async (eventData?: Partial<TicketCreatedEvent['data']>) => {
     ...eventData,
   }
 
-  // create a fake message object
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const msg: Message = {
-    ack: jest.fn(),
-  }
+  const msg = getFakeMessage()
 
   return { listener, data, msg }
 }

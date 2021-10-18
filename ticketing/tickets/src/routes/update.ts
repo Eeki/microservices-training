@@ -4,6 +4,7 @@ import {
   validateRequest,
   NotFoundError,
   NotAuthorizedError,
+  BadRequestError,
 } from '@eeki-ticketing/common'
 import { Ticket } from '../models/ticket'
 import { validateTicket } from '../middlewares/validate-ticket'
@@ -23,6 +24,10 @@ router.put(
 
     if (!ticket) {
       throw new NotFoundError()
+    }
+
+    if (ticket.orderId) {
+      throw new BadRequestError('Cannot edit a reserved ticket')
     }
 
     if (ticket.userId !== req.currentUser!.id) {

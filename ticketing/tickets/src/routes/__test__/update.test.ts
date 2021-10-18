@@ -92,3 +92,18 @@ it('publishes an event', async () => {
 
   expect(natsWrapper.client.publish).toHaveBeenCalled()
 })
+
+it('rejects updates if the ticket is reserved', async () => {
+  const cookie = signin()
+  const response = await createTicket('title', 10, cookie)
+
+  const ticket = await Ticket.findById(response.body.id)
+  ticket!.set({ orderId: getMongoId() })
+  await ticket!.save()
+
+  await request(app)
+    .put(`${ticketsBaseUrl}/${response.body.id}`)
+    .set('Cookie', cookie)
+    .send({ title: 'new title', price: 200 })
+    .expect(400)
+})
