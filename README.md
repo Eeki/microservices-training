@@ -14,9 +14,6 @@ There are two separate projects in here the blog app and the ticketing app.
 
 **Expiration**(node + redis) --Uses--> NATS Streaming Server
 
-### Deployment
-TODO: create a terraform deployment to AWS and/or Google cloud with kustomization (dev and prod)
-
 ## Docker
 Remember to push images to docker hub. In microservice dir:
 
@@ -63,3 +60,7 @@ minikube addons enable metrics-server
 
 ```
 
+### TODO
+- create a terraform deployment to AWS and/or Google cloud with kustomization (dev and prod)
+- Because nats streaming server is deprecated (https://github.com/nats-io/nats-streaming-server#warning--deprecation-notice-warning)
+change to some other messaging system e.g JetStream or kafka
