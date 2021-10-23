@@ -12,7 +12,7 @@ import { Order, Ticket } from '../models'
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher'
 import { natsWrapper } from '../nats-wrapper'
 
-const EXPIRATION_WINDOW_SECONDS = 10
+const EXPIRATION_WINDOW_SECONDS = 10 * 60 // 10 min
 
 const router = express.Router()
 

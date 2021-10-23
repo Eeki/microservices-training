@@ -61,9 +61,7 @@ it('publishes a ticket updated event', async () => {
 
   expect(natsWrapper.client.publish).toHaveBeenCalled()
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const mockFn = natsWrapper.client.publish as jest.mock
+  const mockFn = natsWrapper.client.publish as jest.Mock
 
   expect(mockFn.mock.calls[0][0]).toEqual(Subjects.TicketUpdated)
 
