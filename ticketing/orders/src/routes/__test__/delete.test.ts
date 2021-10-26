@@ -23,7 +23,7 @@ it('marks an order as cancelled', async () => {
 
   // expectation to make sure the order is cancelled
   const updatedOrder = await Order.findById(order.id)
-  expect(updatedOrder?.status).toEqual(OrderStatus.Canceled)
+  expect(updatedOrder?.status).toEqual(OrderStatus.Cancelled)
 })
 
 it('Return not found if the order does not exists', async () => {
