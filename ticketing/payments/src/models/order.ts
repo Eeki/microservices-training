@@ -10,7 +10,7 @@ interface OrderAttrs {
   status: OrderStatus
 }
 
-interface OrderDoc extends mongoose.Document {
+interface OrderDoc extends Omit<mongoose.Document, '_id'> {
   version: number
   userId: string
   price: number
@@ -19,10 +19,7 @@ interface OrderDoc extends mongoose.Document {
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
   build(attrs: OrderAttrs): OrderDoc
-  findByEvent(event: {
-    id: string
-    version: number
-  }): Promise<OrderModel | null>
+  findByEvent(event: { id: string; version: number }): Promise<OrderDoc | null>
 }
 
 const orderSchema = new mongoose.Schema(

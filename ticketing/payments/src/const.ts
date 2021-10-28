@@ -1,1 +1,1 @@
-export const ticketsBaseUrl = '/api/tickets'
+export const paymentsBaseUrl = '/api/payments'

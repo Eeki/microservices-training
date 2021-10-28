@@ -7,7 +7,7 @@ jest.mock('../nats-wrapper')
 
 declare global {
   // eslint-disable-next-line no-var
-  var signin: () => string[]
+  var signin: (id?: string) => string[]
 }
 
 let mongo: MongoMemoryServer
