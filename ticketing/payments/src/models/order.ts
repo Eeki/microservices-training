@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 import { OrderStatus } from '@eeki-ticketing/common'
 
-interface OrderAttrs {
+export interface OrderAttrs {
   id: string
   version: number
   userId: string
@@ -10,7 +10,7 @@ interface OrderAttrs {
   status: OrderStatus
 }
 
-interface OrderDoc extends Omit<mongoose.Document, '_id'> {
+export interface OrderDoc extends Omit<mongoose.Document, '_id'> {
   version: number
   userId: string
   price: number
