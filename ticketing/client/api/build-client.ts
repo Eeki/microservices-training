@@ -7,11 +7,14 @@ import { NextPageContext } from 'next'
 const buildClient = ({ req }: NextPageContext): AxiosInstance => {
   const options: AxiosRequestConfig =
     typeof window === 'undefined'
-      ? {
-          baseURL: 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local',
+      ? // We are on the server
+        {
+          baseURL:
+            'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local',
           headers: req?.headers,
         }
-      : {}
+      : // We are on the browser
+        {}
   return axios.create(options)
 }
 

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { ChangeEvent, FocusEventHandler } from 'react'
 
 interface InputProps {
   value: string
   label: string
   type: string
   id: string
-  onChange(value: string): void
+  onChange(event: ChangeEvent<HTMLInputElement>): void
+  onBlur?: FocusEventHandler<HTMLInputElement>
   error?: string
   ariaDescribedby?: string
 }
@@ -16,6 +17,7 @@ const Input = ({
   type,
   id,
   onChange,
+  onBlur,
   error,
   ariaDescribedby,
 }: InputProps): JSX.Element => (
@@ -29,7 +31,8 @@ const Input = ({
         id={id}
         aria-describedby={ariaDescribedby}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={onChange}
+        onBlur={onBlur}
       />
       {error && <div className="invalid-feedback">{error}</div>}
     </label>

@@ -1,22 +1,48 @@
-import type { NextPageContext } from 'next'
-import buildClient from '../api/build-client'
-import type { CurrentUser } from '../types'
+import Link from 'next/link'
+import type { CurrentUser, EnhancedNextPageContext, Ticket } from '../types'
 
-const LandingPage = ({ currentUser }: CurrentUser): JSX.Element => {
-  return <h1>{currentUser ? 'You are signed in' : 'You are NOT sign in'}</h1>
+interface LandingPageProps {
+  currentUser: CurrentUser
+  tickets: Ticket[]
 }
 
-LandingPage.getInitialProps = async (context: NextPageContext): Promise<CurrentUser> => {
-  try {
-    const client = buildClient(context)
-    const { data } = await client.get<CurrentUser>('/api/users/currentuser')
-    return data
-  } catch (err) {
-    if (err instanceof Error) {
-      console.log('Error:', err.message)
-    }
-    return { currentUser: null }
-  }
+const LandingPage = ({ tickets }: LandingPageProps): JSX.Element => {
+  const ticketList = tickets.map(({ id, title, price }) => (
+    <tr key={id}>
+      <td>{title}</td>
+      <td>{price}</td>
+      <td>
+        <Link href="/tickets/[ticketId]" as={`/tickets/${id}`}>
+          <a className="nav-link" style={{ padding: 0 }}>
+            View
+          </a>
+        </Link>
+      </td>
+    </tr>
+  ))
+
+  return (
+    <div>
+      <h1>Tickets</h1>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>{ticketList}</tbody>
+      </table>
+    </div>
+  )
+}
+
+LandingPage.getInitialProps = async ({
+  client,
+}: EnhancedNextPageContext): Promise<{ tickets: Ticket[] }> => {
+  const { data } = await client.get<Ticket[]>('/api/tickets')
+  return { tickets: data }
 }
 
 export default LandingPage

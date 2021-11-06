@@ -5,7 +5,9 @@ import { ticketsBaseUrl } from '../const'
 const router = express.Router()
 
 router.get(ticketsBaseUrl, async (req: Request, res: Response) => {
-  const tickets = await Ticket.find({})
+  const tickets = await Ticket.find({
+    orderId: undefined,
+  })
 
   res.send(tickets)
 })

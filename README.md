@@ -30,6 +30,7 @@ In dev you need to set jwt key as secret to k8s e.g:
 ```shell
 kubectl create secret generic jwt-secret --from-literal=JWT_KEY=supersecret
 kubectl create secret generic stripe-secret --from-literal=STRIPE_KEY=<stripe_secret_key>
+kubectl create secret generic stripe-publishable-key --from-literal=STRIPE_PUBLISHABLE_KEY=<stripe-publishable-key>
 ```
 ## Minikube development
 
@@ -64,8 +65,30 @@ minikube addons enable metrics-server
 minikube ip
 # 2. Add the following line to /etc/hosts
 # <minkube_ip> ticketing.dev
-
 ```
+
+### How to use custom TLS certificate with minikube ingress addon
+```shell
+# Install mkcert --> https://github.com/FiloSottile/mkcert
+
+# Create a new local certificate authority:
+mkcert -install
+
+# Create a new cert for some domain e.g:
+mkcert ticketing.dev
+
+# Create TLS secret which contains custom certificate and private key
+kubectl -n kube-system create secret tls mkcert --key key.pem --cert cert.pem
+
+# Configure ingress addon
+minikube addons configure ingress
+-- Enter custom cert(format is "namespace/secret"): kube-system/mkcert
+
+# Enable ingress addon (disable first when already enabled)
+minikube addons disable ingress
+minikube addons enable ingress
+```
+
 
 ### TODO
 - create a terraform deployment to AWS and/or Google cloud with kustomization (dev and prod)

@@ -4,7 +4,7 @@ import type { AppContext, AppProps } from 'next/app'
 
 import buildClient from '../api/build-client'
 import Header from '../components/Header'
-import type { CurrentUser } from '../types'
+import type { CurrentUser, EnhancedNextPageContext } from '../types'
 
 interface AppComponentProps extends AppProps, CurrentUser {}
 
@@ -16,19 +16,35 @@ const AppComponent = ({
   return (
     <div>
       <Header currentUser={currentUser} />
-      <Component {...pageProps} />
+      <div className="container">
+        <Component currentUser={currentUser} {...pageProps} />
+      </div>
     </div>
   )
 }
 
 AppComponent.getInitialProps = async ({ ctx, Component }: AppContext) => {
+  if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+    throw new Error('STRIPE_PUBLISHABLE_KEY not set')
+  }
+
   try {
     const client = buildClient(ctx)
     const { data } = await client.get<CurrentUser>('/api/users/currentuser')
 
+    // TODO type the Components to get EnhancedNextPageContext as default
+    const nextPageContext: EnhancedNextPageContext = {
+      client,
+      currentUser: data.currentUser,
+      env: {
+        STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+      },
+      ...ctx,
+    }
+
     const pageProps =
       typeof Component.getInitialProps === 'function'
-        ? await Component.getInitialProps(ctx)
+        ? await Component.getInitialProps(nextPageContext)
         : {}
     return {
       pageProps,

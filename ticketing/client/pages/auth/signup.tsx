@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Router from 'next/router'
-import useRequest from '../../hooks/use-request'
+import { useRequest } from '../../hooks/use-request'
 import Input from '../../components/Input'
-
+import { useFormFields } from '../../hooks/form'
+import { ErrorList } from '../../components/ErrorList'
 
 const Signup = (): JSX.Element => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [{ email, password }, handleFieldChange] = useFormFields({
+    email: '',
+    password: '',
+  })
   const { doRequest, fieldErrors, errors } = useRequest({
     method: 'POST',
     url: '/api/users/signup',
@@ -27,7 +30,7 @@ const Signup = (): JSX.Element => {
         label="Email address"
         type="email"
         id="email"
-        onChange={(value) => setEmail(value)}
+        onChange={handleFieldChange}
         ariaDescribedby="email"
         error={fieldErrors.email}
       />
@@ -36,20 +39,11 @@ const Signup = (): JSX.Element => {
         label="Password"
         type="password"
         id="password"
-        onChange={(value) => setPassword(value)}
+        onChange={handleFieldChange}
         ariaDescribedby="password"
         error={fieldErrors.password}
       />
-      {Boolean(errors.length) && (
-        <div className="alert alert-danger">
-          <h4>Ooops....</h4>
-          <ul className="my-0">
-            {errors.map((errorMessage) => (
-              <li key={errorMessage}>{errorMessage}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <ErrorList errors={errors} />
       <button type="submit" className="btn btn-primary">
         Sign Up
       </button>

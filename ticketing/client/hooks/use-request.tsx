@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import axios, { Method } from 'axios'
 
-interface UseRequest {
+interface UseRequest<T> {
   url: string
   method: Method
   data: Record<string, unknown>
-  onSuccess?(data: any): void
+  onSuccess?(data: T): void
 }
 
 interface ServerError {
@@ -13,15 +13,30 @@ interface ServerError {
   field?: string
 }
 
-const useRequest = ({ url, method, data, onSuccess }: UseRequest) => {
+interface UserRequestResult<T> {
+  doRequest: (props?: Record<string, unknown>) => Promise<T | undefined>
+  fieldErrors: Record<string, string>
+  errors: string[]
+}
+
+export function useRequest<T>({
+  url,
+  method,
+  data,
+  onSuccess,
+}: UseRequest<T>): UserRequestResult<T> {
   const [errors, setErrors] = useState<string[]>([])
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
-  const doRequest = async () => {
+  const doRequest = async (props = {}) => {
     try {
       setErrors([])
       setFieldErrors({})
-      const response = await axios.request({ method, url, data })
+      const response = await axios.request<T>({
+        method,
+        url,
+        data: { ...data, ...props },
+      })
 
       if (onSuccess) {
         onSuccess(response.data)
@@ -49,5 +64,3 @@ const useRequest = ({ url, method, data, onSuccess }: UseRequest) => {
 
   return { doRequest, fieldErrors, errors }
 }
-
-export default useRequest
