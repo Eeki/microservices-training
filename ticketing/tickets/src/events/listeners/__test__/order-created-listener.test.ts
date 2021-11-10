@@ -1,9 +1,12 @@
-import { OrderCreatedEvent, OrderStatus } from '@eeki-ticketing/common'
+import {
+  OrderCreatedEvent,
+  OrderStatus,
+  Subjects,
+} from '@eeki-ticketing/common'
 import { OrderCreatedListeners } from '../order-created-listeners'
 import { natsWrapper } from '../../../nats-wrapper'
 import { Ticket } from '../../../models/ticket'
 import { getFakeMessage, getMongoId } from '../../../test/helpers'
-import { Subjects } from '../../../../../common/src'
 
 const setup = async () => {
   // Create an instance of the listener
