@@ -1,10 +1,8 @@
-import { ExpirationCompleteEvent } from '@eeki-ticketing/common'
+import { ExpirationCompleteEvent, Subjects } from '@eeki-ticketing/common'
 import { ExpirationCompleteListener } from '../expiration-complete-listener'
 import { natsWrapper } from '../../../nats-wrapper'
 import { Ticket, Order, OrderStatus } from '../../../models'
-import { getMongoId } from '../../../test/helpers'
-import { getFakeMessage } from '../../../../../tickets/src/test/helpers'
-import { Subjects } from '../../../../../common/src'
+import { getMongoId, getFakeMessage } from '../../../test/helpers'
 
 const setup = async () => {
   const listener = new ExpirationCompleteListener(natsWrapper.client)

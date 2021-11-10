@@ -10,6 +10,8 @@ import {
 } from './events/listeners'
 
 const start = async () => {
+  console.log('Starting up orders service...')
+
   if (!process.env.JWT_KEY) {
     throw new Error('JWT_KEY must be defined')
   }

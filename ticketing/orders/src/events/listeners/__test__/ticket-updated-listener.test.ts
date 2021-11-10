@@ -1,9 +1,8 @@
 import { TicketUpdatedEvent } from '@eeki-ticketing/common'
 import { Ticket } from '../../../models'
 import { natsWrapper } from '../../../nats-wrapper'
-import { getMongoId } from '../../../test/helpers'
+import { getMongoId, getFakeMessage } from '../../../test/helpers'
 import { TicketUpdatedListener } from '../ticket-updated-listener'
-import { getFakeMessage } from '../../../../../tickets/src/test/helpers'
 
 const setup = async () => {
   // Create an instance of the listener

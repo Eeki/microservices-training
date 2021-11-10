@@ -1,9 +1,8 @@
 import { TicketCreatedEvent } from '@eeki-ticketing/common'
 import { TicketCreatedListener } from '../ticket-created-listener'
 import { natsWrapper } from '../../../nats-wrapper'
-import { getMongoId } from '../../../test/helpers'
+import { getMongoId, getFakeMessage } from '../../../test/helpers'
 import { Ticket } from '../../../models'
-import { getFakeMessage } from '../../../../../tickets/src/test/helpers'
 
 const setup = async (eventData?: Partial<TicketCreatedEvent['data']>) => {
   // Create an instance of the listener

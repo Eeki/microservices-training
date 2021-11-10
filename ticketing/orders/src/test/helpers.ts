@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import type { Message } from 'node-nats-streaming'
 import { Order, OrderDoc, Ticket, TicketDoc } from '../models'
 import { OrderStatus } from '@eeki-ticketing/common'
 
@@ -41,3 +42,10 @@ export const buildOrder = async (attrs: buildOrderAttrs): Promise<OrderDoc> => {
   await order.save()
   return order
 }
+
+export const getFakeMessage = (): Message =>
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  ({
+    ack: jest.fn(),
+  })
