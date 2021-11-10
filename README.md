@@ -1,9 +1,11 @@
 # microservices-training
-There are two separate projects in here the blog app and the ticketing app.
+There are three separate projects in here the blog app, nats-test and the ticketing app.
+The blog app and nats-test are just for testing concepts and tech.
+The Ticketing app is a full project.
 
 ## Ticketing app
 
-###Services
+### Services
 **Auth**(node + mongodb) --Uses--> NATS Streaming Server
 
 **Tickets**(node + mongodb) --Uses--> NATS Streaming Server
@@ -15,14 +17,14 @@ There are two separate projects in here the blog app and the ticketing app.
 **Expiration**(node + redis) --Uses--> NATS Streaming Server
 
 ## Docker
-Remember to push images to docker hub. In microservice dir:
+Remember to push images to docker hub:
 
 `docker build -t eeki/<microservice_name> .`
 
 `docker push eeki/<microservice_name>`
 
 ## Npm
-When publishing new npm package use following command:
+When publishing new npm package first time use following command:
 `npm publish --access public`
 
 ## Kubernetes Secrets
@@ -32,6 +34,7 @@ kubectl create secret generic jwt-secret --from-literal=JWT_KEY=supersecret
 kubectl create secret generic stripe-secret --from-literal=STRIPE_KEY=<stripe_secret_key>
 kubectl create secret generic stripe-publishable-key --from-literal=STRIPE_PUBLISHABLE_KEY=<stripe-publishable-key>
 ```
+
 ## Minikube development
 
 ```shell
