@@ -92,6 +92,21 @@ minikube addons disable ingress
 minikube addons enable ingress
 ```
 
+## Deployment to Digital Ocean
+
+### First time deployment
+```shell
+# 1. Make sure you have the right kubectl context
+
+# 2. Install the the ingress controller to digital ocean
+# Please see https://kubernetes.github.io/ingress-nginx/deploy/#digital-ocean
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.5/deploy/static/provider/do/deploy.yaml
+
+# 3. Apply all the manifests
+kubectl apply -f infra/k8s
+kubectl apply -f infra/k8s-prod
+```
+
 
 ### TODO
 - create a terraform deployment to AWS and/or Google cloud with kustomization (dev and prod)
