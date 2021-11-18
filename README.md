@@ -109,7 +109,6 @@ kubectl apply -f infra/k8s-prod
 
 
 ### TODO
-- create a terraform deployment to AWS and/or Google cloud with kustomization (dev and prod)
 - Because nats streaming server is deprecated (https://github.com/nats-io/nats-streaming-server#warning--deprecation-notice-warning)
 change to some other messaging system e.g JetStream or kafka
 - Add Kustomize to kubernetes
