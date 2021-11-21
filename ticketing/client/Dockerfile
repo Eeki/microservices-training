@@ -7,4 +7,11 @@ RUN npm ci --only=prod
 COPY . .
 RUN npm run disabletelemetry
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start:dev"]
+
+FROM base as production
+
+ENV NODE_PATH=./next
+RUN npm run build
+
+CMD ["npm", "start"]

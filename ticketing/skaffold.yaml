@@ -12,6 +12,7 @@ build:
     - image: eeki/auth
       context: auth
       docker:
+        target: "base"
         dockerfile: Dockerfile
       sync:
         manual:
@@ -20,6 +21,7 @@ build:
     - image: eeki/client
       context: client
       docker:
+        target: "base"
         dockerfile: Dockerfile
       sync:
         manual:
@@ -39,6 +41,7 @@ build:
     - image: eeki/orders
       context: orders
       docker:
+        target: "base"
         dockerfile: Dockerfile
       sync:
         manual:
@@ -47,6 +50,7 @@ build:
     - image: eeki/expiration
       context: expiration
       docker:
+        target: "base"
         dockerfile: Dockerfile
       sync:
         manual:
@@ -55,6 +59,7 @@ build:
     - image: eeki/payments
       context: payments
       docker:
+        target: "base"
         dockerfile: Dockerfile
       sync:
         manual:

@@ -3,8 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "files": [
+    "build/**/*"
+  ],
   "scripts": {
-    "start": "ts-node-dev --poll src/index.ts",
+    "start": "node build/index.js",
+    "start:dev": "ts-node-dev --poll src/index.ts",
+    "clean": "del ./build/*",
+    "build": "npm run clean && tsc -p tsconfig.prod.json",
     "test": "jest --watchAll --no-cache",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"
@@ -23,6 +29,7 @@
     "@eeki-ticketing/common": "^1.0.2",
     "@types/bull": "^3.15.5",
     "bull": "^3.29.3",
+    "del-cli": "^4.0.1",
     "node-nats-streaming": "^0.3.2",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.2"
