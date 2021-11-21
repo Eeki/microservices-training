@@ -30,6 +30,7 @@ build:
     - image: eeki/tickets
       context: tickets
       docker:
+        target: "base"
         dockerfile: Dockerfile
       sync:
         manual:
