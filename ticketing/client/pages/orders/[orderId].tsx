@@ -48,14 +48,16 @@ const OrderShow = ({
   return (
     <div>
       {timeLeft} second until order expires
-      <StripeCheckout
-        token={({ id }) => doRequest({ token: id })}
-        stripeKey={env.STRIPE_PUBLISHABLE_KEY}
-        amount={order.ticket.price * 100} // Because stripe is using cents
-        email={currentUser?.email}
-        currency="EUR"
-      />
-      <ErrorList errors={errors} />
+      <div>
+        <StripeCheckout
+          token={({ id }) => doRequest({ token: id })}
+          stripeKey={env.STRIPE_PUBLISHABLE_KEY}
+          amount={order.ticket.price * 100} // Because stripe is using cents
+          email={currentUser?.email}
+          currency="EUR"
+        />
+        <ErrorList errors={errors} />
+      </div>
     </div>
   )
 }

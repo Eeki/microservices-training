@@ -2,12 +2,20 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-service
+  namespace: default
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
+  tls:
+    - hosts:
+        - eliels-microservice-demo.site
+      secretName: letsencrypt-prod
   rules:
-    - host: www.eliels-microservice-demo.site
+    - host: eliels-microservice-demo.site
       http:
         paths:
           - path: /api/payments/?(.*)

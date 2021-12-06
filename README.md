@@ -28,9 +28,9 @@ When publishing new npm package first time use following command:
 `npm publish --access public`
 
 ## Kubernetes Secrets
-In dev you need to set jwt key as secret to k8s e.g:
+You need to set following secrets to k8s e.g:
 ```shell
-kubectl create secret generic jwt-secret --from-literal=JWT_KEY=supersecret
+kubectl create secret generic jwt-secret --from-literal=JWT_KEY=<some-super-secret>
 kubectl create secret generic stripe-secret --from-literal=STRIPE_KEY=<stripe_secret_key>
 kubectl create secret generic stripe-publishable-key --from-literal=STRIPE_PUBLISHABLE_KEY=<stripe-publishable-key>
 ```
@@ -93,22 +93,47 @@ minikube addons enable ingress
 ```
 
 ## Deployment to Digital Ocean
-
-### First time deployment
+The kubernetes version used in this demo was v1.21.5
 ```shell
-# 1. Make sure you have the right kubectl context
+# 1. Install and authenticate doctl -> https://docs.digitalocean.com/reference/doctl/how-to/install/
 
-# 2. Install the the ingress controller to digital ocean
-# Please see https://kubernetes.github.io/ingress-nginx/deploy/#digital-ocean
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.5/deploy/static/provider/do/deploy.yaml
+# 2. Connect and authenticate to kubernetes cluster
+doctl kubernetes cluster kubeconfig save <cluster_name>
 
-# 3. Apply all the manifests
-kubectl apply -f infra/k8s
-kubectl apply -f infra/k8s-prod
+# 3. Make sure you have the right kubectl context
+
+# 4. Install external services using helm
+
+  # 4.1 Install metrics server (Optional)
+  helm repo add bitnami https://charts.bitnami.com/bitnami
+  helm upgrade --install metrics-server bitnami/metrics-server -n kube-system
+    
+
+  # 4.2 Install ingress controller
+  helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+  helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx --set controller.publishService.enabled=true
+
+  # 4.3 Install Cert-Manager
+  # Create a namespace for the cert-manager and install it
+  kubectl create namespace cert-manager
+  helm repo add jetstack https://charts.jetstack.io
+  helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true
+
+  # 4.4 Install Descheduler (Optional)
+  helm repo add descheduler https://kubernetes-sigs.github.io/descheduler/
+  helm install descheduler -n kube-system descheduler/descheduler
+
+# 5. Apply all of the manifests
+kubectl apply -f infra/k8s/prod
+kubectl apply -f infra/k8s/common
 ```
+
+### DNS settings
+Create DNS A record in digital ocean console and direct it to application's load balancer.
+You can create also a www alias.
 
 
 ### TODO
 - Because nats streaming server is deprecated (https://github.com/nats-io/nats-streaming-server#warning--deprecation-notice-warning)
 change to some other messaging system e.g JetStream or kafka
-- Add Kustomize to kubernetes
+- Add Health checks to services

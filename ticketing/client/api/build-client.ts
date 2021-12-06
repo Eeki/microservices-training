@@ -1,16 +1,13 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { NextPageContext } from 'next'
-
-// TODO do a kubernetes external name service
-//  that will map the long url (ingress-nginx-controller.ingress-nginx.svc.cluster.local) to nginx-ingress-srv
+import { getEnvVariable } from '../libs/env'
 
 const buildClient = ({ req }: NextPageContext): AxiosInstance => {
   const options: AxiosRequestConfig =
     typeof window === 'undefined'
       ? // We are on the server
         {
-          baseURL:
-            'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local',
+          baseURL: getEnvVariable('INGRESS_ADDRESS'),
           headers: req?.headers,
         }
       : // We are on the browser

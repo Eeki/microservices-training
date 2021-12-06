@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configs
+  namespace: default
+data:
+  ingress-address: "http://nginx-ingress-ingress-nginx-controller.default.svc.cluster.local"

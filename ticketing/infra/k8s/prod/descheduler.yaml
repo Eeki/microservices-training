@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: descheduler-policy-configmap
+  namespace: kube-system
+data:
+  policy.yaml: |
+    apiVersion: "descheduler/v1alpha1"
+    kind: "DeschedulerPolicy"
+    strategies:
+      "LowNodeUtilization":
+        enabled: true
+        params:
+          nodeResourceUtilizationThresholds:
+            thresholds:
+              "memory": 20
+              "pods": 5
+            targetThresholds:
+              "memory": 60
+              "pods": 15

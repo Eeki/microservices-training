@@ -15,12 +15,21 @@ spec:
       containers:
         - name: client
           image: eeki/client
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
           env:
-            - name: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+            - name: STRIPE_PUBLISHABLE_KEY
               valueFrom:
                 secretKeyRef:
                   name: stripe-publishable-key
                   key: STRIPE_PUBLISHABLE_KEY
+            - name: INGRESS_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: configs
+                  key: ingress-address
 ---
 apiVersion: v1
 kind: Service

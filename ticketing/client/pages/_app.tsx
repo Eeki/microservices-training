@@ -4,6 +4,7 @@ import type { AppContext, AppProps } from 'next/app'
 
 import buildClient from '../api/build-client'
 import Header from '../components/Header'
+import { getEnvVariable } from '../libs/env'
 import type { CurrentUser, EnhancedNextPageContext } from '../types'
 
 interface AppComponentProps extends AppProps, CurrentUser {}
@@ -24,11 +25,8 @@ const AppComponent = ({
 }
 
 AppComponent.getInitialProps = async ({ ctx, Component }: AppContext) => {
-  if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
-    throw new Error('STRIPE_PUBLISHABLE_KEY not set')
-  }
-
   try {
+    const STRIPE_PUBLISHABLE_KEY = getEnvVariable('STRIPE_PUBLISHABLE_KEY')
     const client = buildClient(ctx)
     const { data } = await client.get<CurrentUser>('/api/users/currentuser')
 
@@ -37,7 +35,7 @@ AppComponent.getInitialProps = async ({ ctx, Component }: AppContext) => {
       client,
       currentUser: data.currentUser,
       env: {
-        STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+        STRIPE_PUBLISHABLE_KEY,
       },
       ...ctx,
     }
