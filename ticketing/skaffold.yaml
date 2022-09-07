@@ -65,10 +65,3 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-
-# Google cloud build
-#build:
-#  googleCloudBuild:
-#    projectId: 'ticketing-dev-324307'
-#  artifacts:
-#    - image: eu.gcr.io/ticketing-dev-324307/auth

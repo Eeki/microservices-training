@@ -102,28 +102,29 @@ doctl kubernetes cluster kubeconfig save <cluster_name>
 
 # 3. Make sure you have the right kubectl context
 
-# 4. Install external services using helm
+# 4. Set secrets (see section Kubernetes Secrets)
 
-  # 4.1 Install metrics server (Optional)
-  helm repo add bitnami https://charts.bitnami.com/bitnami
-  helm upgrade --install metrics-server bitnami/metrics-server -n kube-system
-    
+# 5. Install external services using helm
 
-  # 4.2 Install ingress controller
+  # 5.1 Install ingress controller
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx --set controller.publishService.enabled=true
 
-  # 4.3 Install Cert-Manager
+  # 5.2 Install Cert-Manager
   # Create a namespace for the cert-manager and install it
   kubectl create namespace cert-manager
   helm repo add jetstack https://charts.jetstack.io
   helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true
+  
+  # 5.3 Install metrics server (Optional)
+  helm repo add bitnami https://charts.bitnami.com/bitnami
+  helm upgrade --install metrics-server bitnami/metrics-server -n kube-system
 
-  # 4.4 Install Descheduler (Optional)
+  # 5.4 Install Descheduler (Optional)
   helm repo add descheduler https://kubernetes-sigs.github.io/descheduler/
   helm install descheduler -n kube-system descheduler/descheduler
 
-# 5. Apply all of the manifests
+# 6. Apply all of the manifests
 kubectl apply -f infra/k8s/prod
 kubectl apply -f infra/k8s/common
 ```
@@ -135,5 +136,5 @@ You can create also a www alias.
 
 ### TODO
 - Because nats streaming server is deprecated (https://github.com/nats-io/nats-streaming-server#warning--deprecation-notice-warning)
-change to some other messaging system e.g JetStream or kafka
+change to some other messaging system (e.g. JetStream or kafka)
 - Add Health checks to services
